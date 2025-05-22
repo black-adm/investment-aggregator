@@ -1,0 +1,13 @@
+services:
+  mysql:
+    container_name: 'guide-mysql'
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=investmentaggregatordb'
+      - 'MYSQL_PASSWORD=docker'
+      - 'MYSQL_ROOT_PASSWORD=root'
+      - 'MYSQL_USER=docker'
+    ports:
+      - '3306:3306'
+    volumes:
+      - "./config.d:/etc/mysql/conf.d:ro"
