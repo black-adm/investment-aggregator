@@ -1,13 +1,12 @@
 package coderaw.io.investment_aggregator.service;
 
-import coderaw.io.investment_aggregator.dto.CreateUserDto;
+import coderaw.io.investment_aggregator.dto.UserRequestDto;
 import coderaw.io.investment_aggregator.dto.UserResponseDto;
 import coderaw.io.investment_aggregator.entity.User;
 import coderaw.io.investment_aggregator.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -18,7 +17,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UUID createUser(CreateUserDto user) {
+    public UUID createUser(UserRequestDto user) {
         var entity = new User(user.username(), user.email(), user.password());
         var data = userRepository.save(entity);
 
@@ -49,6 +48,28 @@ public class UserService {
                 u.getEmail(),
                 u.getCreationTimeStamp()
         ));
+    }
+
+    public void updateUserById(String userId, UserRequestDto updateUser) {
+        var id = UUID.fromString(userId);
+        var userEntity = userRepository.findById(id);
+        if (userEntity.isEmpty()) return;
+
+        var user = userEntity.get();
+
+        if (updateUser.username() != null) {
+            user.setUsername(updateUser.username());
+        }
+
+        if (updateUser.email() != null) {
+            user.setEmail(updateUser.email());
+        }
+
+        if (updateUser.password() != null) {
+            user.setPassword(updateUser.password());
+        }
+
+        userRepository.save(user);
     }
 
     public void deleteUserById(String userId) {

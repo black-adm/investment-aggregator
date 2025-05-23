@@ -1,6 +1,6 @@
 package coderaw.io.investment_aggregator.controller;
 
-import coderaw.io.investment_aggregator.dto.CreateUserDto;
+import coderaw.io.investment_aggregator.dto.UserRequestDto;
 import coderaw.io.investment_aggregator.dto.UserResponseDto;
 import coderaw.io.investment_aggregator.entity.User;
 import coderaw.io.investment_aggregator.service.UserService;
@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody CreateUserDto body) {
+    public ResponseEntity<User> createUser(@RequestBody UserRequestDto body) {
         var userId = userService.createUser(body);
         return ResponseEntity.created(URI.create("/api/v1/users/" + userId.toString())).build();
     }
@@ -37,6 +37,12 @@ public class UserController {
     public ResponseEntity<UserResponseDto> findUserById(@PathVariable("userId") String userId) {
         var user = userService.findUserById(userId);
         return user.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<Void> updateUserById(@PathVariable("userId") String userId, @RequestBody UserRequestDto body) {
+        userService.updateUserById(userId, body);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{userId}")
