@@ -6,8 +6,8 @@ import coderaw.io.investment_aggregator.entity.User;
 import coderaw.io.investment_aggregator.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -23,6 +23,21 @@ public class UserService {
         var data = userRepository.save(entity);
 
         return data.getUserId();
+    }
+
+    public Map<String, List<UserResponseDto>> findAllUsers() {
+        var users = userRepository.findAll();
+
+         List<UserResponseDto> allUsers = users
+                                            .stream()
+                                            .map(u -> new UserResponseDto(
+                                                u.getUserId().toString(),
+                                                u.getUsername(),
+                                                u.getEmail(),
+                                                u.getCreationTimeStamp()
+                                            )).toList();
+
+         return Collections.singletonMap("users", allUsers);
     }
 
     public Optional<UserResponseDto> findUserById(String userId) {
