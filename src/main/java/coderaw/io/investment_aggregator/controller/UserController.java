@@ -1,6 +1,7 @@
 package coderaw.io.investment_aggregator.controller;
 
 import coderaw.io.investment_aggregator.dto.CreateUserDto;
+import coderaw.io.investment_aggregator.dto.UserResponseDto;
 import coderaw.io.investment_aggregator.entity.User;
 import coderaw.io.investment_aggregator.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable("userId") String userId) {
-        return null;
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable("userId") String userId) {
+        var user = userService.findUserById(userId);
+        return user.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 }
