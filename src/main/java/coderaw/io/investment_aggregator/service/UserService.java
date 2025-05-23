@@ -1,0 +1,25 @@
+package coderaw.io.investment_aggregator.service;
+
+import coderaw.io.investment_aggregator.dto.CreateUserDto;
+import coderaw.io.investment_aggregator.entity.User;
+import coderaw.io.investment_aggregator.repository.UserRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+
+@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public UUID createUser(CreateUserDto user) {
+        var entity = new User(user.username(), user.email(), user.password());
+        var data = userRepository.save(entity);
+
+        return data.getUserId();
+    }
+}

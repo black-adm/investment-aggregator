@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -25,21 +26,20 @@ public class User {
     private String password;
 
     @CreationTimestamp
+    @Column(name = "creation_timestamp", updatable = false)
     private Instant creationTimeStamp;
 
     @UpdateTimestamp
+    @Column(name = "update_timestamp")
     private Instant updateTimeStamp;
 
     public User() {
     }
 
-    public User(UUID userId, String username, String email, String password, Instant creationTimeStamp, Instant updateTimeStamp) {
-        this.userId = userId;
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.creationTimeStamp = creationTimeStamp;
-        this.updateTimeStamp = updateTimeStamp;
     }
 
     public UUID getUserId() {
