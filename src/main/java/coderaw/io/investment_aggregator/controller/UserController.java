@@ -38,4 +38,10 @@ public class UserController {
         var user = userService.findUserById(userId);
         return user.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUserById(@PathVariable("userId") String userId) {
+        userService.deleteUserById(userId);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -50,4 +50,13 @@ public class UserService {
                 u.getCreationTimeStamp()
         ));
     }
+
+    public void deleteUserById(String userId) {
+        var id = UUID.fromString(userId);
+        var userAlreadyExists = userRepository.existsById(id);
+
+        if (userAlreadyExists) {
+            userRepository.deleteById(id);
+        }
+    }
 }
